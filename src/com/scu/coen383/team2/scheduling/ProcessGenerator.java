@@ -13,13 +13,13 @@ public class ProcessGenerator {
         // arrival time: 0 - 99
         // service time: 0 - 10
         int range_start = 0;
-        int range_arrival = 100;
-        int range_service = 11;
+        int range_arrival = 99;
+        int range_service = 10;
         int priority_bond = 5;
 
         for (int i = 0; i < jobCnt; i++) {
-            int arrival_time = generator.nextInt(range_arrival);
-            int service_time = generator.nextInt(range_service);
+            float arrival_time = generator.nextFloat() * range_arrival; // nextFloat() [0,1)
+            float service_time = generator.nextFloat() * range_service;
             int priority =     generator.nextInt(priority_bond);
 
             if ( service_time == 0) service_time += 1;

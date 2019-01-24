@@ -1,8 +1,9 @@
 package com.scu.coen383.team2.scheduling;
 
+import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class ScheduleBase {
+public abstract class ScheduleBase {
     private Stats stats = new Stats();
 
     public class Stats
@@ -124,11 +125,13 @@ public class ScheduleBase {
         {
             while (quanta++ < p.getStartTime())
                 System.out.print("_");
-            quanta = p.getStartTime() + p.getServiceTime();
+            quanta = p.getStartTime() + (int)Math.ceil(p.getServiceTime());
 
             for (int i = 0; i < p.getServiceTime(); ++i)
                 System.out.print(p.getName());
         }
         System.out.println();
     }
+
+    public abstract Queue<Process> schedule(PriorityQueue<Process> q);
 }
