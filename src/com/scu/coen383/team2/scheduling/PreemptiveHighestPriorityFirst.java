@@ -19,7 +19,6 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
         int startTime;
         Process process;
         Process scheduled;
-        Process remaining;
         ScheduleBase.Stats stats = this.getStats();
 
         HashMap<Character, Float> arrivalTimeTable = new HashMap<>(); // unqiue for every process
