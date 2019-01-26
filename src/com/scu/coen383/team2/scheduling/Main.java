@@ -1,20 +1,16 @@
 package com.scu.coen383.team2.scheduling;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.PriorityQueue;
-import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 
 public class Main {
-    private static final int COUNT_ALGORITHM = 6;
+    private static final int COUNT_ALGORITHM = 8;
 
     public static void main(String[] args) {
 
 
         // loading Scheduling algorithms here
         FirstComeFirstServed FCFS = new FirstComeFirstServed();
-
+        NonpreemptiveHighestPriorityFirst NP_HPF = new NonpreemptiveHighestPriorityFirst();
 
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
 
@@ -37,7 +33,8 @@ public class Main {
         FCFS.schedule(priorityQueues[0]);
 
 
-
+        System.out.println("\nNonpreemptive Highest Priority First (No Aging)");
+        NP_HPF.schedule(priorityQueues[5]);
 
     }
 }
