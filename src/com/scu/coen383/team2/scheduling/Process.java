@@ -13,6 +13,7 @@ public class Process implements Comparable<Process> {
     public float    getArrivalTime()    { return _arrivalTime; }
     public float    getServiceTime()    { return _serviceTime; }
     public int      getServiceQuanta()  {return (int)Math.ceil(_serviceTime);}
+    public int      getArrivalQuanta()  {return (int)Math.ceil((_arrivalTime));}
     public int      getStartTime()      { return _startTime; }
 
 
