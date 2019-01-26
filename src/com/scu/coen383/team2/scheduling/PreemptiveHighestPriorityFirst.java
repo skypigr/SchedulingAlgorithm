@@ -1,8 +1,10 @@
 package com.scu.coen383.team2.scheduling;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import java.util.*;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /*
     Ref: https://www.geeksforgeeks.org/program-for-preemptive-priority-cpu-scheduling/
@@ -15,7 +17,9 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
 
         int finishTime = 0;
         int startTime;
-        Process process, scheduled, remaining;
+        Process process;
+        Process scheduled;
+        Process remaining;
         ScheduleBase.Stats stats = this.getStats();
 
         HashMap<Character, Float> arrivalTimeTable = new HashMap<>(); // unqiue for every process
