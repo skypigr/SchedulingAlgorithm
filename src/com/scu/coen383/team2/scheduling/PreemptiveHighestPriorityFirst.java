@@ -59,29 +59,7 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
 
 
             // update stats
-            if (!arrivalTimeTable.containsKey(process.getName()))   {
-                if (startTime < 100) {
-                    arrivalTimeTable.put(process.getName(), process.getArrivalTime());
-                    stats.addResponseTime(startTime - process.getArrivalTime());
-                    stats.addWaitTime(startTime - process.getArrivalTime());
-                }
-            } else {
-                stats.addWaitTime(startTime - finishTimeTable.get(process.getName()));
-            }
-
-            // still have more than 1 quanta to run
-            if (process.getServiceQuanta() > 1) {
-                remaining = new Process(process);
-                remaining.setServiceTime(remaining.getServiceTime()-1);
-                readyQueues[remaining.getPriority()-1].add(remaining);
-                finishTimeTable.put(remaining.getName(), finishTime);
-
-            } else {
-                // current process terminate
-                stats.addTurnaroundTime(finishTime - process.getArrivalTime());
-                stats.addProcess();
-            }
-
+            updateStats(arrivalTimeTable, finishTimeTable, readyQueues, startTime, finishTime, process, stats);
             scheduled = setScheduled(startTime, 1, process);
             scheduledQueue.add(scheduled);
         }
@@ -95,6 +73,38 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
         return scheduledQueue;
     }
 
+    private void updateStats(HashMap<Character, Float> arrivalTimeTable,
+                             HashMap<Character, Integer> finishTimeTable,
+                             Queue<Process>[] readyQueues,
+                             int startTime,
+                             int finishTime,
+                             Process process,
+                             ScheduleBase.Stats stats) {
+        if (!arrivalTimeTable.containsKey(process.getName()))   {
+            if (startTime < 100) {
+                arrivalTimeTable.put(process.getName(), process.getArrivalTime());
+                stats.addResponseTime(startTime - process.getArrivalTime());
+                stats.addWaitTime(startTime - process.getArrivalTime());
+            }
+        } else {
+            stats.addWaitTime(startTime - finishTimeTable.get(process.getName()));
+        }
+
+        // still have more than 1 quanta to run
+        if (process.getServiceQuanta() > 1) {
+
+            Process remaining = new Process(process);
+            remaining.setServiceTime(remaining.getServiceTime()-1);
+            readyQueues[remaining.getPriority()-1].add(remaining);
+            finishTimeTable.put(remaining.getName(), finishTime);
+
+        } else {
+            // current process terminate
+            stats.addTurnaroundTime(finishTime - process.getArrivalTime());
+            stats.addProcess();
+        }
+
+    }
     private Process setScheduled(int startTime, float serviceTime, Process process) {
         return new Process(
                 process.getName(),
