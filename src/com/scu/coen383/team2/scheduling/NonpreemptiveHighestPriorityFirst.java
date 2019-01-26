@@ -18,8 +18,13 @@ public class NonpreemptiveHighestPriorityFirst extends ScheduleBase {
         Process process, scheduled;
         ScheduleBase.Stats stats = this.getStats();
 
-        //rank by priority in ascending order
-        PriorityQueue<Process> readyQueue = new PriorityQueue<>((Comparator.comparingInt(Process::getPriority)));
+        // in priority ascending order
+        // in arrivalTime ascending order for same priority
+        PriorityQueue<Process> readyQueue = new PriorityQueue<>((o1, o2) -> {
+            return o1.getPriority() == o2.getPriority()
+                    ? Float.compare(o1.getArrivalTime(), o2.getArrivalTime())
+                    : Integer.compare(o1.getPriority(), o2.getPriority());
+        });
 
         while (!initialQueue.isEmpty() || ! readyQueue.isEmpty()) {
             // fectch ready process from initalQueue, put them into ready Queue, waiting for execution
@@ -39,7 +44,7 @@ public class NonpreemptiveHighestPriorityFirst extends ScheduleBase {
             if (startTime > 99) break;
 
             statsState(startTime, finishTime, process, stats);
-            scheduled = setScheduled(startTime, process);
+            scheduled = setScheduled(startTime, process.getServiceTime(), process);
 
             scheduledQueue.add(scheduled);
         }
@@ -53,11 +58,11 @@ public class NonpreemptiveHighestPriorityFirst extends ScheduleBase {
         return scheduledQueue;
     }
 
-    private Process setScheduled(int startTime, Process process) {
+    private Process setScheduled(int startTime, float serviceTime, Process process) {
         return new Process(
                 process.getName(),
                 process.getArrivalTime(),
-                process.getServiceTime(),
+                serviceTime,
                 process.getPriority(),
                 startTime);
     }

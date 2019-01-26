@@ -15,7 +15,7 @@ public class ProcessGenerator {
         int range_start = 0;
         int range_arrival = 99;
         int range_service = 10;
-        int priority_bond = 5;
+        int priority_bond = 4;
 
         for (int i = 0; i < jobCnt; i++) {
             float arrival_time = generator.nextFloat() * range_arrival; // nextFloat() [0,1)
@@ -24,7 +24,7 @@ public class ProcessGenerator {
 
             if ( service_time == 0) service_time += 1;
 
-            pq.add(new Process(names.charAt(i), arrival_time, service_time, priority, 0));
+            pq.add(new Process(names.charAt(i), arrival_time, service_time, priority+1, 0));
         }
 
         return pq;

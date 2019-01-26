@@ -12,10 +12,11 @@ public class Process implements Comparable<Process> {
     public char     getName()           { return _name; }
     public float    getArrivalTime()    { return _arrivalTime; }
     public float    getServiceTime()    { return _serviceTime; }
-    public int      getServiceQuanta()  {return (int)Math.ceil(_serviceTime);}
-    public int      getArrivalQuanta()  {return (int)Math.ceil((_arrivalTime));}
+    public int      getServiceQuanta()  { return (int)Math.ceil(_serviceTime);}
+    public int      getArrivalQuanta()  { return (int)Math.ceil((_arrivalTime));}
     public int      getStartTime()      { return _startTime; }
 
+    public void     setServiceTime(float newServiceTime)    { _serviceTime = newServiceTime; }
 
     Process(char name, float arrival_time, float service_time, int priority, int start_time) {
         _name = name;
@@ -23,6 +24,14 @@ public class Process implements Comparable<Process> {
         _serviceTime = service_time;
         _priority = priority;
         _startTime = start_time;
+    }
+
+    Process(Process obj) {
+        _name = obj.getName();
+        _arrivalTime    = obj.getArrivalTime();
+        _serviceTime    = obj.getServiceTime();
+        _priority       = obj.getPriority();
+        _startTime      = obj.getStartTime();
     }
 
 
@@ -35,6 +44,9 @@ public class Process implements Comparable<Process> {
     public String toString()
     {
         return String.format("    Process %c [arrivalTime= %5.2f, expectedRunTime= %4.2f, priority= %d]",
-                _name, _arrivalTime, _serviceTime, _priority);
+                _name,
+                _arrivalTime,
+                _serviceTime,
+                _priority);
     }
 }
