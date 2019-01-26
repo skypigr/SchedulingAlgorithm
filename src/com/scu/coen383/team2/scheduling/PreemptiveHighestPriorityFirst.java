@@ -1,5 +1,6 @@
 package com.scu.coen383.team2.scheduling;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.*;
 
 
@@ -26,21 +27,27 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
         }
 
         int curQueueIndex = MAX_PRIORITY;
-        while (!initialQueue.isEmpty()) {
+        while (curQueueIndex < MAX_PRIORITY || !initialQueue.isEmpty()) {
 
             // fetch process from initialQueue and put them into corresponding readyQueue
-            while (!initialQueue.isEmpty() && initialQueue.peek().getArrivalQuanta() <= finishTime)
-                readyQueues[initialQueue.peek().getPriority()-1].add(initialQueue.poll());
+            while (!initialQueue.isEmpty() && initialQueue.peek().getArrivalQuanta() <= finishTime) {
+                int p = initialQueue.peek().getPriority() - 1;
+                readyQueues[p].add(initialQueue.poll());
+            }
 
             curQueueIndex = highestQueue(readyQueues);
-            process = curQueueIndex < MAX_PRIORITY ? readyQueues[curQueueIndex].poll() : initialQueue.poll();
 
+            // both of readyQueue and initialQueue are empty, we are done
+            if (curQueueIndex == MAX_PRIORITY && initialQueue.isEmpty()) break;
+
+            process = curQueueIndex < MAX_PRIORITY ? readyQueues[curQueueIndex].poll() : initialQueue.poll();
             startTime = Math.max(process.getArrivalQuanta(), finishTime);
             finishTime = startTime + 1;
 
 
-//            System.out.format("Index: %2d, Name: %c, finishTime: %2d, left: %d, process: %s\n",
+//            System.out.format("Index: %2d, Name: %c, finishTime: %2d, left: %d, %s\n",
 //                    curQueueIndex,
+////                    readyQueues[curQueueIndex].size(),
 //                    process.getName(),
 //                    finishTime,
 //                    initialQueue.size(),
