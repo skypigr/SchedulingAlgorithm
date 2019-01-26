@@ -1,6 +1,5 @@
 package com.scu.coen383.team2.scheduling;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -15,7 +14,8 @@ public class NonpreemptiveHighestPriorityFirst extends ScheduleBase {
 
         int finishTime = 0;
         int startTime;
-        Process process, scheduled;
+        Process process;
+        Process scheduled;
         ScheduleBase.Stats stats = this.getStats();
 
         // in priority ascending order

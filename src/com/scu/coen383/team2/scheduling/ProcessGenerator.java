@@ -12,7 +12,7 @@ public class ProcessGenerator {
 
         // arrival time: 0 - 99
         // service time: 0 - 10
-        int range_start = 0;
+        // int range_start = 0;
         int range_arrival = 99;
         int range_service = 10;
         int priority_bond = 4;
