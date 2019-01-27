@@ -1,6 +1,5 @@
 package com.scu.coen383.team2.scheduling;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -23,7 +22,21 @@ public class NonpreemptiveHighestPriorityFirstAging extends ScheduleBase {
         Process scheduled;
         ScheduleBase.Stats stats = getStats();
 
-
+    /*
+        readyQueues:
+        [
+            [...]
+            [p0, p1, p2, ... pi]
+            [...]
+            [...]
+         ]
+         Each time, we pick up the first nonempty row as current Queue,
+         which is the row with highest priority.
+         When we do nonpreemptive HPF with Aging, we update each process in
+         this readyQueues, increase their age by one, if some of them wait
+         long enough, let's say it has waited for 5 quanta, we promote it
+         to a higher priority level, put it to the end of [i-1] row.
+     */
         Queue<Process>[] readyQueues = new Queue[MAX_PRIORITY];
         for (int i = 0; i < MAX_PRIORITY ; i++) {
             readyQueues[i] = new LinkedList<>();
