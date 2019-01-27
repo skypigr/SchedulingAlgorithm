@@ -7,6 +7,7 @@ public class Process implements Comparable<Process> {
     private float   _arrivalTime;       // arrival time 0 - 99
     private int     _startTime;         // start time
     private float   _serviceTime;       // expected total run time 0.1 - 10
+    private int     _age;
 
     public int      getPriority()       { return _priority; }
     public char     getName()           { return _name; }
@@ -15,8 +16,17 @@ public class Process implements Comparable<Process> {
     public int      getServiceQuanta()  { return (int)Math.ceil(_serviceTime);}
     public int      getArrivalQuanta()  { return (int)Math.ceil((_arrivalTime));}
     public int      getStartTime()      { return _startTime; }
+    public int      getAge()            { return _age;}
 
     public void     setServiceTime(float newServiceTime)    { _serviceTime = newServiceTime; }
+
+    public void     addAge() {
+        _age += 1;
+        if ( _priority > 1 && 5 == _age) {
+            _priority -= 1;
+            _age = 0;
+        }
+    }
 
     Process(char name, float arrival_time, float service_time, int priority, int start_time) {
         _name = name;
@@ -24,6 +34,7 @@ public class Process implements Comparable<Process> {
         _serviceTime = service_time;
         _priority = priority;
         _startTime = start_time;
+        _age  = 0;
     }
 
     Process(Process obj) {
@@ -32,6 +43,7 @@ public class Process implements Comparable<Process> {
         _serviceTime    = obj.getServiceTime();
         _priority       = obj.getPriority();
         _startTime      = obj.getStartTime();
+        _age            = obj.getAge();
     }
 
 

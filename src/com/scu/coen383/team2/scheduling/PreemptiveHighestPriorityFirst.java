@@ -8,7 +8,11 @@ import java.util.Queue;
 
 /*
     Ref: https://www.geeksforgeeks.org/program-for-preemptive-priority-cpu-scheduling/
+         https://www.cs.rutgers.edu/~pxk/416/notes/07-scheduling.html
+
+    Use RR with time slice of 1 quantum for each piority queue
  */
+
 public class PreemptiveHighestPriorityFirst extends ScheduleBase {
     private static int MAX_PRIORITY = 4;
 
