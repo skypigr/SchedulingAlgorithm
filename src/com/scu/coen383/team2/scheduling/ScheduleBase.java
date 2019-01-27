@@ -4,8 +4,9 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public abstract class ScheduleBase {
-    private Stats stats = new Stats();
+    public static final int MAX_PRIORITY = 4;
 
+    private Stats stats = new Stats();
     public class Stats
     {
         private int turnaroundTime;

@@ -11,9 +11,18 @@ import java.util.Queue;
     After a process has waited for 5 quanta at a priority level, bump it up to next higher level.
     Process with same priority are scheduled by FCFS
  */
+
 public class NonpreemptiveHighestPriorityFirstAging extends ScheduleBase {
     public Queue<Process> schedule(PriorityQueue<Process> q) {
         Queue<Process> scheduledQueue = new LinkedList<>();
+
+        int finishTime = 0;
+        int startTime;
+        Process process;
+        Process scheduled;
+        ScheduleBase.Stats stats;
+
+
 
         return scheduledQueue;
     }

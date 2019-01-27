@@ -14,7 +14,6 @@ import java.util.Queue;
  */
 
 public class PreemptiveHighestPriorityFirst extends ScheduleBase {
-    private static int MAX_PRIORITY = 4;
 
     public Queue<Process> schedule(PriorityQueue<Process> initialQueue) {
         Queue<Process> scheduledQueue = new LinkedList<>();
