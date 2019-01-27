@@ -19,7 +19,6 @@ public class NonpreemptiveHighestPriorityFirstAging extends SchedulePriority {
         int finishTime = 0;
         int startTime;
         Process process;
-        Process scheduled;
         ScheduleBase.Stats stats = getStats();
 
         /*
