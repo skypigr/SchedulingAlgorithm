@@ -10,7 +10,7 @@ import java.util.Queue;
     Ref: https://www.geeksforgeeks.org/program-for-preemptive-priority-cpu-scheduling/
          https://www.cs.rutgers.edu/~pxk/416/notes/07-scheduling.html
 
-    Use RR with time slice of 1 quantum for each piority queue
+    Use RR with time slice of 1 quantum for each priority queue
  */
 
 public class PreemptiveHighestPriorityFirst extends ScheduleBase {
@@ -27,7 +27,7 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
         HashMap<Character, Float> arrivalTimeTable = new HashMap<>(); // unqiue for every process
         HashMap<Character, Integer> finishTimeTable = new HashMap<>(); // update each round
 
-        Queue<Process>[] readyQueues = new Queue[4];
+        Queue<Process>[] readyQueues = new Queue[MAX_PRIORITY];
         for (int i = 0; i < MAX_PRIORITY ; i++) {
             readyQueues[i] = new LinkedList<>();
         }
@@ -37,8 +37,7 @@ public class PreemptiveHighestPriorityFirst extends ScheduleBase {
 
             // fetch process from initialQueue and put them into corresponding readyQueue
             while (!initialQueue.isEmpty() && initialQueue.peek().getArrivalQuanta() <= finishTime) {
-                int p = initialQueue.peek().getPriority() - 1;
-                readyQueues[p].add(initialQueue.poll());
+                readyQueues[initialQueue.peek().getPriority() - 1].add(initialQueue.poll());
             }
 
             curQueueIndex = highestQueue(readyQueues);

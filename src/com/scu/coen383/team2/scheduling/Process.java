@@ -20,12 +20,15 @@ public class Process implements Comparable<Process> {
 
     public void     setServiceTime(float newServiceTime)    { _serviceTime = newServiceTime; }
 
-    public void     addAge() {
+    // return true if priority get increased, otherwise return false
+    public boolean  addAge() {
         _age += 1;
         if ( _priority > 1 && 5 == _age) {
             _priority -= 1;
             _age = 0;
+            return true;
         }
+        return false;
     }
 
     Process(char name, float arrival_time, float service_time, int priority, int start_time) {

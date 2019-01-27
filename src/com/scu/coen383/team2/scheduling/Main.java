@@ -13,6 +13,7 @@ public class Main {
         NonpreemptiveHighestPriorityFirst NP_HPF = new NonpreemptiveHighestPriorityFirst();
         PreemptiveHighestPriorityFirst P_HPF = new PreemptiveHighestPriorityFirst();
 
+        NonpreemptiveHighestPriorityFirstAging NP_HPF_AG = new NonpreemptiveHighestPriorityFirstAging();
 
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
 
@@ -37,9 +38,13 @@ public class Main {
 
         System.out.println("\nNonpreemptive Highest Priority First (No Aging)");
         NP_HPF.schedule(priorityQueues[5]);
+        System.out.println("\nNonpreemptive Highest Priority First (Aging)");
+        NP_HPF_AG.schedule(priorityQueues[7]);
 
         System.out.println("\nPreemptive Highest Priority First (No Aging)");
         P_HPF.schedule(priorityQueues[6]);
+
+
 
     }
 }
