@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Queue;
 
 public abstract class SchedulePriority extends ScheduleBase {
-     void updateStats(HashMap<Character, Float> arrivalTimeTable,
+     protected void updateStats(HashMap<Character, Float> arrivalTimeTable,
                              HashMap<Character, Integer> finishTimeTable,
                              Queue<Process>[] readyQueues,
                              int startTime,
@@ -37,7 +37,7 @@ public abstract class SchedulePriority extends ScheduleBase {
 
     }
 
-     void updatePriority(Queue<Process>[] readyQueues) {
+    protected void updatePriority(Queue<Process>[] readyQueues) {
         for (int i = 0; i < MAX_PRIORITY; i++) {
             for (Process p: readyQueues[i]) {
                 if (p.addAge() && i > 0) {
@@ -49,7 +49,7 @@ public abstract class SchedulePriority extends ScheduleBase {
             }
         }
     }
-     void statsState(int startTime, int finishTime, Process process, Stats stats) {
+    protected void statsState(int startTime, int finishTime, Process process, Stats stats) {
 
         stats.addTurnaroundTime(finishTime - process.getArrivalTime());                     // finishTime - arrivalTime
         stats.addResponseTime(startTime - process.getArrivalTime());                        // startTime - arrivalTime
@@ -57,7 +57,7 @@ public abstract class SchedulePriority extends ScheduleBase {
         stats.addProcess();
     }
 
-     Process setScheduled(int startTime, float serviceTime, Process process) {
+    protected Process setScheduled(int startTime, float serviceTime, Process process) {
         return new Process(
                 process.getName(),
                 process.getArrivalTime(),
@@ -66,7 +66,7 @@ public abstract class SchedulePriority extends ScheduleBase {
                 startTime);
     }
 
-     int highestQueue(Queue<Process>[] queues) {
+    protected int highestQueue(Queue<Process>[] queues) {
 
         for (int i = 0; i < MAX_PRIORITY; i++) {
             if (!queues[i].isEmpty()) return i;

@@ -61,14 +61,7 @@ public class NonpreemptiveHighestPriorityFirstAging extends SchedulePriority {
             if (startTime > 99) break;
 
             // build the timeline for current process, nonpreemptive
-            for (int i = startTime; i < finishTime; i++) {
-                // update priority of every process in readyQueues
-                // upgrade it if necessary
-                updatePriority(readyQueues);
-
-                scheduled = setScheduled(i, 1, process);
-                scheduledQueue.add(scheduled);
-            }
+            updateReadyQueues(startTime, finishTime, process, readyQueues, scheduledQueue);
 
             statsState(startTime, finishTime, process, stats);
         }
@@ -79,5 +72,20 @@ public class NonpreemptiveHighestPriorityFirstAging extends SchedulePriority {
         stats.nextRound();
 
         return scheduledQueue;
+    }
+
+    private void updateReadyQueues(int startTime,
+                                   int finishTime,
+                               Process process,
+                               Queue<Process>[] readyQueues,
+                               Queue<Process> scheduledQueue) {
+        for (int i = startTime; i < finishTime; i++) {
+            // update priority of every process in readyQueues
+            // upgrade it if necessary
+            updatePriority(readyQueues);
+
+            Process scheduled = setScheduled(i, 1, process);
+            scheduledQueue.add(scheduled);
+        }
     }
 }
