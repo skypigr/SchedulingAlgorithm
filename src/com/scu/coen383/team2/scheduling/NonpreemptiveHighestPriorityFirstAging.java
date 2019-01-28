@@ -1,7 +1,5 @@
 package com.scu.coen383.team2.scheduling;
 
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -10,22 +8,18 @@ import java.util.Queue;
     Ref: https://www.geeksforgeeks.org/program-for-preemptive-priority-cpu-scheduling/
          https://www.cs.rutgers.edu/~pxk/416/notes/07-scheduling.html
 
-    Use RR with time slice of 1 quantum for each priority queue
+    After a process has waited for 5 quanta at a priority level, bump it up to next higher level.
+    Process with same priority are scheduled by FCFS
  */
 
-public class PreemptiveHighestPriorityFirst extends SchedulePriority {
-
+public class NonpreemptiveHighestPriorityFirstAging extends SchedulePriority {
     public Queue<Process> schedule(PriorityQueue<Process> initialQueue) {
         Queue<Process> scheduledQueue = new LinkedList<>();
 
         int finishTime = 0;
         int startTime;
         Process process;
-        Process scheduled;
-        ScheduleBase.Stats stats = this.getStats();
-
-        HashMap<Character, Float>   arrivalTimeTable    = new HashMap<>(); // unique for every process
-        HashMap<Character, Integer> finishTimeTable     = new HashMap<>(); // update each round
+        ScheduleBase.Stats stats = getStats();
 
         /*
             readyQueues:
@@ -56,28 +50,19 @@ public class PreemptiveHighestPriorityFirst extends SchedulePriority {
             }
 
             curQueueIndex = highestQueue(readyQueues);
-
             // both of readyQueue and initialQueue are empty, we are done
             if (curQueueIndex == MAX_PRIORITY && initialQueue.isEmpty()) break;
 
             process = curQueueIndex < MAX_PRIORITY ? readyQueues[curQueueIndex].poll() : initialQueue.poll();
             startTime = Math.max(process.getArrivalQuanta(), finishTime);
-            finishTime = startTime + 1;
+            finishTime = startTime + process.getServiceQuanta();
 
+            if (startTime > 99) break;
 
-//            System.out.format("Index: %2d, Name: %c, finishTime: %2d, left: %d, %s\n",
-//                    curQueueIndex,
-////                    readyQueues[curQueueIndex].size(),
-//                    process.getName(),
-//                    finishTime,
-//                    initialQueue.size(),
-//                    process);
+            // build the timeline for current process, nonpreemptive
+            updateReadyQueues(startTime, finishTime, process, readyQueues, scheduledQueue);
 
-
-            // update stats
-            updateStats(arrivalTimeTable, finishTimeTable, readyQueues, startTime, finishTime, process, stats);
-            scheduled = setScheduled(startTime, 1, process);
-            scheduledQueue.add(scheduled);
+            statsState(startTime, finishTime, process, stats);
         }
 
         stats.addQuanta(finishTime);
@@ -85,7 +70,21 @@ public class PreemptiveHighestPriorityFirst extends SchedulePriority {
         printRoundAvg();
         stats.nextRound();
 
-
         return scheduledQueue;
+    }
+
+    private void updateReadyQueues(int startTime,
+                                   int finishTime,
+                               Process process,
+                               Queue<Process>[] readyQueues,
+                               Queue<Process> scheduledQueue) {
+        for (int i = startTime; i < finishTime; i++) {
+            // update priority of every process in readyQueues
+            // upgrade it if necessary
+            updatePriority(readyQueues);
+
+            Process scheduled = setScheduled(i, 1, process);
+            scheduledQueue.add(scheduled);
+        }
     }
 }

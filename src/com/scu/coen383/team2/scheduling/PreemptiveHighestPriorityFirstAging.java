@@ -1,6 +1,5 @@
 package com.scu.coen383.team2.scheduling;
 
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -10,11 +9,11 @@ import java.util.Queue;
     Ref: https://www.geeksforgeeks.org/program-for-preemptive-priority-cpu-scheduling/
          https://www.cs.rutgers.edu/~pxk/416/notes/07-scheduling.html
 
+    After a process has waited for 5 quanta at a priority level, bump it up to next higher level.
     Use RR with time slice of 1 quantum for each priority queue
  */
 
-public class PreemptiveHighestPriorityFirst extends SchedulePriority {
-
+public class PreemptiveHighestPriorityFirstAging extends SchedulePriority{
     public Queue<Process> schedule(PriorityQueue<Process> initialQueue) {
         Queue<Process> scheduledQueue = new LinkedList<>();
 
@@ -64,15 +63,8 @@ public class PreemptiveHighestPriorityFirst extends SchedulePriority {
             startTime = Math.max(process.getArrivalQuanta(), finishTime);
             finishTime = startTime + 1;
 
-
-//            System.out.format("Index: %2d, Name: %c, finishTime: %2d, left: %d, %s\n",
-//                    curQueueIndex,
-////                    readyQueues[curQueueIndex].size(),
-//                    process.getName(),
-//                    finishTime,
-//                    initialQueue.size(),
-//                    process);
-
+            // update priority
+            updatePriority(readyQueues);
 
             // update stats
             updateStats(arrivalTimeTable, finishTimeTable, readyQueues, startTime, finishTime, process, stats);
@@ -88,4 +80,5 @@ public class PreemptiveHighestPriorityFirst extends SchedulePriority {
 
         return scheduledQueue;
     }
+
 }

@@ -3,16 +3,17 @@ package com.scu.coen383.team2.scheduling;
 import java.util.PriorityQueue;
 
 public class Main {
-    private static final int COUNT_ALGORITHM = 8;
+    private static final int COUNT_ALGORITHM = 9;
 
     public static void main(String[] args) {
 
 
         // loading Scheduling algorithms here
-        FirstComeFirstServed FCFS = new FirstComeFirstServed();
-        NonpreemptiveHighestPriorityFirst NP_HPF = new NonpreemptiveHighestPriorityFirst();
-        PreemptiveHighestPriorityFirst P_HPF = new PreemptiveHighestPriorityFirst();
-
+        FirstComeFirstServed                    FCFS        = new FirstComeFirstServed();
+        NonpreemptiveHighestPriorityFirst       NP_HPF      = new NonpreemptiveHighestPriorityFirst();
+        PreemptiveHighestPriorityFirst          P_HPF       = new PreemptiveHighestPriorityFirst();
+        NonpreemptiveHighestPriorityFirstAging  NP_HPF_AG   = new NonpreemptiveHighestPriorityFirstAging();
+        PreemptiveHighestPriorityFirstAging     P_HPF_AG    = new PreemptiveHighestPriorityFirstAging();
 
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
 
@@ -35,11 +36,17 @@ public class Main {
         FCFS.schedule(priorityQueues[0]);
 
 
-        System.out.println("\nNonpreemptive Highest Priority First (No Aging)");
+        System.out.println("\nNonpreemptive Highest Priority First");
         NP_HPF.schedule(priorityQueues[5]);
+        System.out.println("\nNonpreemptive Highest Priority First (Aging)");
+        NP_HPF_AG.schedule(priorityQueues[6]);
 
-        System.out.println("\nPreemptive Highest Priority First (No Aging)");
-        P_HPF.schedule(priorityQueues[6]);
+        System.out.println("\nPreemptive Highest Priority First");
+        P_HPF.schedule(priorityQueues[7]);
+        System.out.println("\nPreemptive Highest Priority First (Aging)");
+        P_HPF_AG.schedule(priorityQueues[8]);
+
+
 
     }
 }

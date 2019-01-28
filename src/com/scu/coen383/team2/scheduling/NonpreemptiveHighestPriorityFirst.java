@@ -20,11 +20,9 @@ public class NonpreemptiveHighestPriorityFirst extends ScheduleBase {
 
         // in priority ascending order
         // in arrivalTime ascending order for same priority
-        PriorityQueue<Process> readyQueue = new PriorityQueue<>((o1, o2) -> {
-            return o1.getPriority() == o2.getPriority()
-                    ? Float.compare(o1.getArrivalTime(), o2.getArrivalTime())
-                    : Integer.compare(o1.getPriority(), o2.getPriority());
-        });
+        PriorityQueue<Process> readyQueue = new PriorityQueue<>((o1, o2) -> o1.getPriority() == o2.getPriority()
+                ? Float.compare(o1.getArrivalTime(), o2.getArrivalTime())
+                : Integer.compare(o1.getPriority(), o2.getPriority()));
 
         while (!initialQueue.isEmpty() || ! readyQueue.isEmpty()) {
             // fectch ready process from initalQueue, put them into ready Queue, waiting for execution
