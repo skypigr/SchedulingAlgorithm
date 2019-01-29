@@ -10,6 +10,7 @@ public class Main {
 
         // loading Scheduling algorithms here
         FirstComeFirstServed                    FCFS        = new FirstComeFirstServed();
+        RoundRobin                              RR          = new RoundRobin();
         NonpreemptiveHighestPriorityFirst       NP_HPF      = new NonpreemptiveHighestPriorityFirst();
         PreemptiveHighestPriorityFirst          P_HPF       = new PreemptiveHighestPriorityFirst();
         NonpreemptiveHighestPriorityFirstAging  NP_HPF_AG   = new NonpreemptiveHighestPriorityFirstAging();
@@ -18,6 +19,7 @@ public class Main {
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
 
         // write your code here
+        //3
         priorityQueues[0] = ProcessGenerator.generateJobs (1234, 20);
 
         // make a copy for each algorithm
@@ -35,14 +37,18 @@ public class Main {
         System.out.println("\nFisrt come first servered");
         FCFS.schedule(priorityQueues[0]);
 
+        System.out.println("\nRound Robin");
+        RR.schedule(priorityQueues[4]);
 
         System.out.println("\nNonpreemptive Highest Priority First");
         NP_HPF.schedule(priorityQueues[5]);
+
         System.out.println("\nNonpreemptive Highest Priority First (Aging)");
         NP_HPF_AG.schedule(priorityQueues[6]);
 
         System.out.println("\nPreemptive Highest Priority First");
         P_HPF.schedule(priorityQueues[7]);
+
         System.out.println("\nPreemptive Highest Priority First (Aging)");
         P_HPF_AG.schedule(priorityQueues[8]);
 
