@@ -33,7 +33,7 @@ public class ShortestJobFirst extends ScheduleBase{
             process = readyQueue.isEmpty() ? inputQueue.poll() : readyQueue.poll();
             startTime = Math.max(process.getArrivalQuanta(), finishTime);
             if (startTime > 99) break;
-            System.out.println(process.getName() + " " + startTime);
+//            System.out.println(process.getName() + " " + startTime);
             finishTime = startTime + process.getServiceQuanta();
 
             statsState(startTime, process, stats);

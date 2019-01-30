@@ -10,12 +10,15 @@ public class Main {
 
         // loading Scheduling algorithms here
         FirstComeFirstServed                    FCFS        = new FirstComeFirstServed();
+
         ShortestJobFirst                        SJF         = new ShortestJobFirst();
         ShortestRemainingTime                   SRT         = new ShortestRemainingTime();
+        RoundRobin                              RR          = new RoundRobin();
         NonpreemptiveHighestPriorityFirst       NP_HPF      = new NonpreemptiveHighestPriorityFirst();
         PreemptiveHighestPriorityFirst          P_HPF       = new PreemptiveHighestPriorityFirst();
         NonpreemptiveHighestPriorityFirstAging  NP_HPF_AG   = new NonpreemptiveHighestPriorityFirstAging();
         PreemptiveHighestPriorityFirstAging     P_HPF_AG    = new PreemptiveHighestPriorityFirstAging();
+
 
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
 
@@ -42,6 +45,8 @@ public class Main {
 
         System.out.println("\nShortest remaining time");
         SRT.schedule(priorityQueues[2]);
+        System.out.println("\nRoundRobin");
+        RR.schedule(priorityQueues[4]);
 
         System.out.println("\nNonpreemptive Highest Priority First");
         NP_HPF.schedule(priorityQueues[5]);
