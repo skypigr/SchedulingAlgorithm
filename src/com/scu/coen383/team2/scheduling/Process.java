@@ -18,6 +18,9 @@ public class Process implements Comparable<Process> {
     public int      getStartTime()      { return _startTime; }
     public int      getAge()            { return _age;}
 
+    public void     setName(char newName) {_name = newName;}
+    public void     setStartTime(int newStartTime) {_startTime = newStartTime;}
+
     public void     setServiceTime(float newServiceTime)    { _serviceTime = newServiceTime; }
 
     // return true if priority get increased, otherwise return false

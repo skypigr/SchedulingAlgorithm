@@ -21,7 +21,7 @@ public class FirstComeFirstServed extends ScheduleBase {
         for (int i = 0; i < queueSize; ++i)
         {
             process = queue.remove();
-            startTime = Math.max((int) Math.ceil(process.getArrivalTime()), finishTime);
+            startTime = Math.max(process.getArrivalQuanta(), finishTime);
             finishTime = startTime + process.getServiceQuanta();
 
             if (startTime > 99)
