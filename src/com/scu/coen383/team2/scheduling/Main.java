@@ -31,6 +31,7 @@ public class Main {
         }
 
 
+
         // Add different scheduling algorithms here
         System.out.println("\nFisrt come first servered");
         FCFS.schedule(priorityQueues[0]);
