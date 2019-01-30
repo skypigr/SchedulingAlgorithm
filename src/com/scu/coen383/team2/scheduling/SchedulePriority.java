@@ -1,7 +1,6 @@
 package com.scu.coen383.team2.scheduling;
 
-import java.util.HashMap;
-import java.util.Queue;
+import java.util.*;
 
 public abstract class SchedulePriority extends ScheduleBase {
      protected void updateStats(HashMap<Character, Float> arrivalTimeTable,
@@ -39,14 +38,23 @@ public abstract class SchedulePriority extends ScheduleBase {
 
     protected void updatePriority(Queue<Process>[] readyQueues) {
         for (int i = 0; i < MAX_PRIORITY; i++) {
+
+            List<Process> tempList = new ArrayList<>();
             for (Process p: readyQueues[i]) {
                 if (p.addAge() && i > 0) {
                     // here we are, get p out from current level
                     // then add it to higher level
-                    readyQueues[i].remove(p);
+                    // readyQueues[i].remove(p);
+                    tempList.add(p);
                     readyQueues[i-1].add(p);
                 }
             }
+
+            // remove from current level
+            for (Process rmP: tempList) {
+                readyQueues[i].remove(rmP);
+            }
+
         }
     }
     protected void statsState(int startTime, int finishTime, Process process, Stats stats) {

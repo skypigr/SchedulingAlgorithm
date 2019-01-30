@@ -9,7 +9,7 @@ public abstract class ScheduleBase {
     private Stats stats = new Stats();
     public class Stats
     {
-        private int turnaroundTime;
+        private float turnaroundTime;
         private int waitingTime;
         private int responseTime;
         private int processCount;

@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: com.scu.coen383.team2.scheduling.Main
+
