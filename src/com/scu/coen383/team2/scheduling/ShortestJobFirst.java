@@ -4,79 +4,66 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+// SJF scheduling
+// process with same service time are scheduled by FCFS
 public class ShortestJobFirst extends ScheduleBase{
 
     @Override
-    public Queue<Process> schedule(PriorityQueue<Process> queue) {
-        int startTime;
-        int finishTime = 0;
-        Process curProcess = null;
-        Stats stats = this.getStats();
-
-        // inputQueue is sorted based on the arrivalTime
-        PriorityQueue<Process> inputQueue = new PriorityQueue<>((a, b) -> (int) (a.getArrivalTime() - b.getArrivalTime()));
-
-        //readyQueue is sorted based on the burstTime, if the burstTime is same, it is sorted by the arrive time
-        PriorityQueue<Process> readyQueue = new PriorityQueue<>((a, b) -> {
-            if (a.getServiceTime() == b.getServiceTime()) {
-                return (int) (a.getArrivalTime() - b.getArrivalTime());
-            }
-            return (int) (a.getServiceTime() - b.getServiceTime());
-        });
-
-        //resultQueue is used to store all scheduled process
+    public Queue<Process> schedule(PriorityQueue<Process> inputQueue) {
         Queue<Process> resultQueue = new LinkedList<>();
 
-        while (!queue.isEmpty()) {
-            curProcess = queue.poll();
-            if (curProcess.getArrivalTime() <= 99) {
-                inputQueue.offer(curProcess);
+        int finishTime = 0;
+        int startTime;
+        Process process;
+        Process scheduled;
+        Stats stats = this.getStats();
+
+        // readyQueue is sorted by service time
+        // if they have same service time, sorted them by the arrive time
+        PriorityQueue<Process> readyQueue = new PriorityQueue<>((a, b) -> a.getServiceTime() == b.getServiceTime()
+                ? Float.compare(a.getArrivalTime(), b.getArrivalTime())
+                : Float.compare(a.getServiceTime(), b.getServiceTime()));
+
+        while (!inputQueue.isEmpty() || ! readyQueue.isEmpty()) {
+            // fectch ready process from inputQueue, put them into readyQueue, waiting for execution
+            while (!inputQueue.isEmpty() && inputQueue.peek().getArrivalQuanta() <= finishTime) {
+                readyQueue.add(inputQueue.poll());
             }
+
+            process = readyQueue.isEmpty() ? inputQueue.poll() : readyQueue.poll();
+            startTime = Math.max(process.getArrivalQuanta(), finishTime);
+            finishTime = startTime + process.getServiceQuanta();
+
+            if (startTime > 99) break;
+
+            statsState(startTime, finishTime, process, stats);
+            scheduled = setScheduled(startTime, process.getServiceTime(), process);
+
+            resultQueue.add(scheduled);
         }
-        executByTimeStep(inputQueue, readyQueue, resultQueue, stats);
+
+        stats.addQuanta(finishTime);
         printTimeChart(resultQueue);
         printRoundAvg();
         stats.nextRound();
 
         return resultQueue;
     }
-    public void executByTimeStep(PriorityQueue<Process> inputQueue, PriorityQueue<Process> readyQueue, Queue<Process> resultQueue, Stats stats) {
-        // timeStamp is the starting moment of a time slice
-        Process inExecutionProcess = null;
-        int timeStamp = 0;
-        while (inExecutionProcess != null || !inputQueue.isEmpty() || !readyQueue.isEmpty()) {
-            if (!inputQueue.isEmpty() && inputQueue.peek().getArrivalTime() == timeStamp) {
-                readyQueue.offer(inputQueue.poll());
-            }
-            if (inExecutionProcess == null) {
-                if (!readyQueue.isEmpty() ) {
-                    inExecutionProcess = readyQueue.poll();
-                    calcuStas(timeStamp, inExecutionProcess, stats);
-                    resultQueue.add(setScheduled(timeStamp, inExecutionProcess));
-                }
-            }
-            if (inExecutionProcess != null){
-                if (timeStamp >= inExecutionProcess.getStartTime() + inExecutionProcess.getServiceTime() + 1) {
-                    inExecutionProcess = null;
-                }
-            }
-            timeStamp++;
-        }
-    }
-    //create Process which have been scheduled
-    private Process setScheduled(int startTime, Process process) {
+
+    private Process setScheduled(int startTime, float serviceTime, Process process) {
         return new Process(
                 process.getName(),
                 process.getArrivalTime(),
-                process.getServiceTime(),
+                serviceTime,
                 process.getPriority(),
                 startTime);
     }
-    //add current scheduled Process into statistic
-    public void calcuStas(int startTime, Process curProcess, Stats stats) {
-        stats.addTurnaroundTime(curProcess.getServiceQuanta() + startTime - curProcess.getArrivalTime());     // finishTime - arrivalTime
-        stats.addResponseTime(startTime - curProcess.getArrivalTime());                        // startTime - arrivalTime
-        stats.addWaitTime(curProcess.getServiceQuanta() + startTime - curProcess.getArrivalTime() - curProcess.getServiceTime());// turnaroundTime - serviceTime
+
+    private void statsState(int startTime, int finishTime, Process process, Stats stats) {
+
+        stats.addTurnaroundTime(finishTime - process.getArrivalTime());                     // finishTime - arrivalTime
+        stats.addResponseTime(startTime - process.getArrivalTime());                        // startTime - arrivalTime
+        stats.addWaitTime(finishTime - process.getArrivalTime() - process.getServiceTime());// turnaroundTime - serviceTime
         stats.addProcess();
     }
 }
