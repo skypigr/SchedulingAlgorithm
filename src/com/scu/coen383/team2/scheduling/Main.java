@@ -21,7 +21,7 @@ public class Main {
 
 
         PriorityQueue<Process>[] priorityQueues =  new PriorityQueue[COUNT_ALGORITHM + 1];
-        int [] SEEDS = new int[]{1234, 117777,1551,17111, 19191};
+        int [] SEEDS = new int[]{1234, 117777,33317,17111, 19191};
 
         for (int j = 0; j < ROUND; j++) {
             System.out.format("\n### Start Running Round %d ###\n", j);
@@ -69,7 +69,7 @@ public class Main {
 
         System.out.println("\n");
         System.out.format("====================   5 Round Average Statistics  ====================\n");
-        System.out.format("%10s %20s %20s %20s\n", "Algorithm", "Turnaround", "Waiting", "Responce");
+        System.out.format("%10s %20s %20s %20s\n", "Algorithm", "Turnaround", "Waiting", "Response");
         System.out.format("%10s %20.3f %20.3f %20.3f\n", "FCFS",
                 FCFS.getStats().getAvgTurnaroundTime(),
                 FCFS.getStats().getAvgWaitingTime(),
