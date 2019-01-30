@@ -10,6 +10,7 @@ public class Main {
 
         // loading Scheduling algorithms here
         FirstComeFirstServed                    FCFS        = new FirstComeFirstServed();
+        ShortestRemainingTime                   SRT         = new ShortestRemainingTime();
         NonpreemptiveHighestPriorityFirst       NP_HPF      = new NonpreemptiveHighestPriorityFirst();
         PreemptiveHighestPriorityFirst          P_HPF       = new PreemptiveHighestPriorityFirst();
         NonpreemptiveHighestPriorityFirstAging  NP_HPF_AG   = new NonpreemptiveHighestPriorityFirstAging();
@@ -35,6 +36,9 @@ public class Main {
         // Add different scheduling algorithms here
         System.out.println("\nFisrt come first servered");
         FCFS.schedule(priorityQueues[0]);
+
+        System.out.println("\nShortest remaining time");
+        SRT.schedule(priorityQueues[2]);
 
 
         System.out.println("\nNonpreemptive Highest Priority First");
