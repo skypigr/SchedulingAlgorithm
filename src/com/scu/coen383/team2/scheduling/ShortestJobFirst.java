@@ -32,11 +32,11 @@ public class ShortestJobFirst extends ScheduleBase{
 
             process = readyQueue.isEmpty() ? inputQueue.poll() : readyQueue.poll();
             startTime = Math.max(process.getArrivalQuanta(), finishTime);
+            if (startTime > 99) break;
+            System.out.println(process.getName() + " " + startTime);
             finishTime = startTime + process.getServiceQuanta();
 
-            if (startTime > 99) break;
-
-            statsState(startTime, finishTime, process, stats);
+            statsState(startTime, process, stats);
             scheduled = setScheduled(startTime, process.getServiceTime(), process);
 
             resultQueue.add(scheduled);
@@ -59,11 +59,11 @@ public class ShortestJobFirst extends ScheduleBase{
                 startTime);
     }
 
-    private void statsState(int startTime, int finishTime, Process process, Stats stats) {
+    private void statsState(int startTime, Process process, Stats stats) {
 
-        stats.addTurnaroundTime(finishTime - process.getArrivalTime());                     // finishTime - arrivalTime
+        stats.addTurnaroundTime(startTime + process.getServiceTime() - process.getArrivalTime());                     // finishTime - arrivalTime
         stats.addResponseTime(startTime - process.getArrivalTime());                        // startTime - arrivalTime
-        stats.addWaitTime(finishTime - process.getArrivalTime() - process.getServiceTime());// turnaroundTime - serviceTime
+        stats.addWaitTime(startTime - process.getArrivalTime());                            // the same to responseTime
         stats.addProcess();
     }
 }
