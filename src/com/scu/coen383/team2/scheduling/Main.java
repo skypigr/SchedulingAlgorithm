@@ -10,6 +10,7 @@ public class Main {
 
         // loading Scheduling algorithms here
         FirstComeFirstServed                    FCFS        = new FirstComeFirstServed();
+        ShortestJobFirst                        SJF         = new ShortestJobFirst();
         ShortestRemainingTime                   SRT         = new ShortestRemainingTime();
         NonpreemptiveHighestPriorityFirst       NP_HPF      = new NonpreemptiveHighestPriorityFirst();
         PreemptiveHighestPriorityFirst          P_HPF       = new PreemptiveHighestPriorityFirst();
@@ -30,24 +31,27 @@ public class Main {
         while (!priorityQueues[COUNT_ALGORITHM].isEmpty()) {
             System.out.println(priorityQueues[COUNT_ALGORITHM].poll());
         }
-
-
+        
 
         // Add different scheduling algorithms here
         System.out.println("\nFisrt come first servered");
         FCFS.schedule(priorityQueues[0]);
 
+        System.out.println("\nShortest Job First");
+        SJF.schedule(priorityQueues[1]);
+
         System.out.println("\nShortest remaining time");
         SRT.schedule(priorityQueues[2]);
 
-
         System.out.println("\nNonpreemptive Highest Priority First");
         NP_HPF.schedule(priorityQueues[5]);
+
         System.out.println("\nNonpreemptive Highest Priority First (Aging)");
         NP_HPF_AG.schedule(priorityQueues[6]);
 
         System.out.println("\nPreemptive Highest Priority First");
         P_HPF.schedule(priorityQueues[7]);
+
         System.out.println("\nPreemptive Highest Priority First (Aging)");
         P_HPF_AG.schedule(priorityQueues[8]);
 
